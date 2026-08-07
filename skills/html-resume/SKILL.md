@@ -1,20 +1,33 @@
 ---
 name: html-resume
-description: Create or redesign recruiter-friendly resumes as production-ready HTML with exact A4 PDF output. Use for resumes, CVs, executive profiles, professional biographies, and portfolio summaries that need factual content rewriting, clear information hierarchy, user-directed color styling, optional portrait integration, multi-page layout, and print validation.
+description: Turn resumes exported from job platforms, existing PDFs, or career notes into independently editable, recruiter-friendly HTML with exact A4 PDF output. Use for resumes, CVs, executive profiles, professional biographies, and portfolio summaries that need Chinese-English translation or same-language rewriting, factual preservation, clear information hierarchy, user-directed color styling, optional portrait integration, multi-page layout, and print validation.
 ---
 
 # HTML Resume Skill
 
-Create professional career documents that read well on screen and print predictably to A4 PDF.
+Create professional career documents that read well on screen and print predictably to A4 PDF. Help users move career information out of a job platform or fixed PDF layout into an independently editable document.
 
 Always deliver HTML as the source of truth. When the user requests PDF, export the same HTML and validate every rendered page.
 
-## 1. Confirm the brief
+## 1. Choose the source path and confirm the brief
+
+Support either source path:
+
+1. An existing resume exported from any job platform, an attached PDF, or text extracted from that PDF.
+2. Career history, notes, or structured facts supplied directly by the user.
+
+When the environment supports PDF input, inspect the original PDF. When it does not, use extracted Markdown or plain text supplied by the user. If Microsoft MarkItDown is already available in a local environment, it can extract a text-based PDF with:
+
+```bash
+markitdown existing-resume.pdf -o existing-resume.md
+```
+
+Treat extracted text as an ingestion aid. Check it against the original PDF when available because columns, dates, links, and section order may be extracted incorrectly. Do not claim OCR was performed. If a scanned or image-only PDF cannot be read, request OCR output or source text from the user.
 
 Before designing, confirm:
 
 - document type
-- language and target audience
+- source language, output language, and target audience
 - target role or positioning
 - required sections
 - page-count preference or hard limit
@@ -50,12 +63,15 @@ Keep HTML and PDF content identical. Do not deliver only a PDF when HTML is requ
 
 Rewrite for clarity, credibility, and scanning speed.
 
+Support Chinese-to-English, English-to-Chinese, and same-language rewriting. Translate meaning and hiring context rather than sentence structure. Use natural terminology for the target audience while preserving the candidate's actual scope and level.
+
 Preserve:
 
 - employers, titles, dates, degrees, certifications, and contact details
 - the candidate's actual ownership and scope
 - supplied metrics and their original meaning
 - standard industry terminology when translating
+- company, product, school, and certification names unless the user supplies or approves a recognized translated name
 
 Never:
 
@@ -63,6 +79,7 @@ Never:
 - promote participation into leadership without evidence
 - use unsupported labels such as “expert” or “world-class”
 - translate line by line when consolidation improves recruiter comprehension
+- hide uncertainty in an ambiguous translation; ask the user to confirm instead
 
 Prefer bullets shaped as:
 

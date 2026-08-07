@@ -28,15 +28,17 @@
 
 ---
 
-`html-resume` helps AI agents turn career information into recruiter-friendly resumes, CVs, executive profiles, professional biographies, and portfolio summaries. It combines factual content rewriting, restrained editorial hierarchy, exact A4 layout, print-safe CSS, and PDF validation.
+`html-resume` helps AI agents turn resumes exported from job platforms, existing PDFs, and career notes into independently editable, recruiter-friendly resumes, CVs, executive profiles, professional biographies, and portfolio summaries. It supports Chinese-to-English, English-to-Chinese, and same-language rewriting while preserving the source facts. The workflow combines factual content rewriting, restrained editorial hierarchy, exact A4 layout, print-safe CSS, and PDF validation.
 
 ## 中文摘要
 
-`html-resume` 是一個可重複使用的 Agent Skill，協助 AI 在不虛構經歷或數據的前提下，重寫並整理出對招募者友善的履歷、CV、主管簡介、專業介紹與作品集摘要。主要交付物永遠是 HTML；需要 PDF 時，會由同一份 HTML 產生精確 A4 文件並完成頁面驗證。
+`html-resume` 是一個可重複使用的 Agent Skill，協助 AI 將任何求職平台匯出的履歷、既有 PDF 或職涯資料，快速整理成可自行修改的履歷。它支援中翻英、英翻中與同語言重寫，且不會虛構經歷或數據。主要交付物永遠是 HTML；需要 PDF 時，會由同一份 HTML 產生精確 A4 文件並完成頁面驗證。
 
 ## What it does
 
 - Creates or redesigns resumes, CVs, executive profiles, professional biographies, and portfolio summaries.
+- Converts resumes exported from any job platform or existing PDF into an independently editable document instead of locking the information to the original platform or layout.
+- Translates between Chinese and English, or rewrites in the original language, while preserving facts and using natural recruiter-facing language.
 - Rewrites content for clarity and recruiter scanability without inventing facts, metrics, ownership, or qualifications.
 - Uses restrained editorial hierarchy instead of dashboard-like, card-heavy layouts.
 - Adapts section order and page count to the candidate rather than forcing every resume into two pages.
@@ -80,14 +82,7 @@ Personal use does not require publishing this repository as a Plugin. ChatGPT ca
 2. In the Plugin Directory, open the **Skills** tab.
 3. Select **Create**, then **Upload from your computer**.
 4. Upload the complete `skills/html-resume/` Skill package. Keep `SKILL.md`, `agents/`, and `references/` together so all instructions and supporting resources remain available.
-5. After ChatGPT finishes scanning the upload, install the Skill and start a conversation with a request such as:
-
-   ```text
-   Create an A4 HTML resume for a Senior Backend Engineer.
-   Choose the page count based on the available content.
-   Use a professional navy and steel-blue palette.
-   Use the html-resume skill. Ask me for missing information first.
-   ```
+5. After ChatGPT finishes scanning the upload, install the Skill. Upload an existing resume and use **Path 1** below, or provide career notes and use **Path 2**.
 
 You can also choose **Create with chat** or **Create with editor** and use this repository as the source material. Personal Skills are generally available for ChatGPT Business, Enterprise, Healthcare, and Edu. Enterprise and Edu workspaces may require an admin to enable Skills and Skill uploads. Personal Skills must be added separately on desktop and web/mobile and do not automatically sync across those surfaces.
 
@@ -113,6 +108,17 @@ Then start a new agent session if the Skill does not appear automatically. Invok
 
 For other agents that implement the [Agent Skills standard](https://agentskills.io/), point the agent to `skills/html-resume/SKILL.md` or copy the entire `skills/html-resume/` directory into that agent's documented Skill directory. Keep both `SKILL.md` and `agents/openai.yaml` together.
 
+#### Optional: extract an existing PDF with MarkItDown
+
+If a local agent cannot read an attached PDF directly, [Microsoft MarkItDown](https://github.com/microsoft/markitdown) can extract the resume into LLM-friendly Markdown. Install its PDF support as an isolated command-line tool with uv:
+
+```bash
+uv tool install 'markitdown[pdf]'
+markitdown path/to/existing-resume.pdf -o existing-resume.md
+```
+
+Give the resulting Markdown to the agent together with the original PDF when possible. MarkItDown is an ingestion aid, not the final resume converter: check names, dates, metrics, links, and section order against the original file. Image-only or scanned PDFs may require a separate OCR step.
+
 ### Option 3: PDF conversion environment with uv
 
 This repository includes `pyproject.toml` and `uv.lock` for the Playwright-based PDF converter. After [installing uv](https://docs.astral.sh/uv/getting-started/installation/), create the project environment and install Chromium:
@@ -126,14 +132,28 @@ uv run playwright install chromium
 
 ## Usage
 
-The Skill can be invoked explicitly:
+### Path 1: start from a job-platform resume or existing PDF
+
+Upload the original resume where the agent supports PDF input. For a local workflow that cannot read PDFs directly, first convert it with MarkItDown as described above. The source and output can be Chinese or English in either direction.
+
+```text
+Use $html-resume to turn the attached resume exported from a job platform or existing PDF into my own independently editable A4 HTML resume.
+Use [English / Traditional Chinese / Simplified Chinese] as the output language, translating from the source language when needed.
+Preserve employers, titles, dates, metrics, skills, contact details, and the original meaning. Rewrite naturally for recruiters instead of translating line by line. Ask me about ambiguous or missing information rather than inventing facts.
+Choose the page count based on the content and use a [preferred palette] color palette.
+Also export and validate the PDF.
+```
+
+### Path 2: start from career history
+
+The Skill can also be invoked explicitly with career notes:
 
 ```text
 Use $html-resume to create a polished A4 HTML resume from the attached career history.
 Use a professional navy and steel-blue palette.
 ```
 
-It can also be used in natural language:
+Or use natural language:
 
 ```text
 Turn this work history into a PDF-ready HTML resume for an AI application engineer.
@@ -147,7 +167,7 @@ The Skill does not impose a default resume color. Include your preferred palette
 Before generating the document, provide or confirm:
 
 - Target document type.
-- Language and audience.
+- Source language, output language, and audience.
 - Target role or positioning.
 - Page-count preference or hard limit, if any.
 - Required sections.

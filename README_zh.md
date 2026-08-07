@@ -28,11 +28,13 @@
 
 ---
 
-`html-resume` 協助 AI Agent 將職涯資料整理為對招募者友善的履歷、CV、主管簡介、專業介紹與作品集摘要。它結合忠於事實的內容重寫、克制的編輯層級、精確的 A4 版面、適合列印的 CSS，以及 PDF 驗證流程。
+`html-resume` 協助 AI Agent 將任何求職平台匯出的履歷、既有 PDF 或職涯資料，快速整理成可自行修改且對招募者友善的履歷、CV、主管簡介、專業介紹與作品集摘要。它支援中翻英、英翻中與同語言重寫，並結合忠於事實的內容整理、克制的編輯層級、精確的 A4 版面、適合列印的 CSS，以及 PDF 驗證流程。
 
 ## 功能
 
 - 建立或重新設計履歷、CV、主管簡介、專業介紹與作品集摘要。
+- 將任何求職平台匯出的履歷或既有 PDF，轉為不受原平台與版面限制、可自行持續修改的文件。
+- 支援中翻英、英翻中與同語言重寫，在保留事實的前提下改寫為自然且適合招募情境的文字。
 - 在不虛構經歷、數據、職責歸屬或資格的前提下，提高內容清晰度與招募者掃讀效率。
 - 採用克制的編輯層級，避免儀表板式或過度使用卡片的版面。
 - 根據候選人的內容調整章節順序與頁數，不強制將所有履歷限制為兩頁。
@@ -76,14 +78,7 @@
 2. 在 Plugin Directory 開啟 **Skills** 分頁。
 3. 選擇 **Create**，再選擇 **Upload from your computer**。
 4. 上傳完整的 `skills/html-resume/` Skill 套件。請讓 `SKILL.md`、`agents/` 與 `references/` 保持在一起，確保所有指示與支援資源都能使用。
-5. ChatGPT 完成安全掃描後，安裝 Skill，接著開始對話並輸入類似以下的需求：
-
-   ```text
-   Create an A4 HTML resume for a Senior Backend Engineer.
-   Choose the page count based on the available content.
-   Use a professional navy and steel-blue palette.
-   Use the html-resume skill. Ask me for missing information first.
-   ```
+5. ChatGPT 完成安全掃描後，安裝 Skill。上傳既有履歷並使用下方的**路徑一**，或提供職涯資料並使用**路徑二**。
 
 也可以選擇 **Create with chat** 或 **Create with editor**，並將此 Repo 作為建立 Skill 的參考來源。個人 Skills 目前主要適用於 ChatGPT Business、Enterprise、Healthcare 與 Edu；Enterprise 與 Edu 工作區可能需要管理員先啟用 Skills 與 Skill 上傳權限。個人 Skills 必須分別加入桌面版與 web／mobile，這些使用介面之間不會自動同步。
 
@@ -109,6 +104,17 @@ cp -R skills/html-resume ~/.agents/skills/html-resume
 
 若其他 Agent 支援 [Agent Skills standard](https://agentskills.io/)，請讓 Agent 指向 `skills/html-resume/SKILL.md`，或將完整的 `skills/html-resume/` 資料夾複製到該 Agent 文件指定的 Skill 目錄。請確保 `SKILL.md` 與 `agents/openai.yaml` 一起保留。
 
+#### 選用：使用 MarkItDown 擷取既有 PDF
+
+若本地 Agent 無法直接讀取上傳的 PDF，可以使用 [Microsoft MarkItDown](https://github.com/microsoft/markitdown) 將履歷擷取為適合 LLM 讀取的 Markdown。使用 uv 將 PDF 支援安裝成隔離的命令列工具：
+
+```bash
+uv tool install 'markitdown[pdf]'
+markitdown path/to/existing-resume.pdf -o existing-resume.md
+```
+
+請將產生的 Markdown 提供給 Agent，並在可行時一併提供原始 PDF。MarkItDown 只負責協助讀取來源，不是最終履歷轉換工具；姓名、日期、數據、連結與章節順序仍應對照原始檔案確認。純圖片或掃描型 PDF 可能需要額外的 OCR（光學字元辨識）步驟。
+
 ### 方式三：使用 uv 建立 PDF 轉換環境
 
 此 Repo 已提供 `pyproject.toml` 與 `uv.lock`，用於管理 Playwright PDF 轉換工具的依賴。完成 [uv 安裝](https://docs.astral.sh/uv/getting-started/installation/)後，建立專案環境並安裝 Chromium：
@@ -122,14 +128,28 @@ uv run playwright install chromium
 
 ## 使用方式
 
-可以明確呼叫 Skill：
+### 路徑一：從求職平台履歷或既有 PDF 開始
+
+若 Agent 支援 PDF 輸入，請直接上傳原始履歷；若本地工作流程無法直接讀取 PDF，可先依照上方說明使用 MarkItDown 轉換。來源與輸出都可以是中文或英文，並支援雙向翻譯。
+
+```text
+使用 $html-resume，將我上傳的求職平台履歷或既有 PDF，製作成一份由我自行維護、可持續修改的 A4 HTML 履歷。
+輸出語言使用［英文／繁體中文／簡體中文］；來源語言不同時請進行翻譯。
+請保留雇主、職稱、日期、數據、技能、聯絡資訊與原意，使用自然且適合招募者閱讀的方式重寫，不要逐句硬翻。遇到模糊或缺少的資訊時先詢問我，不得自行虛構。
+請依內容決定頁數，並使用［偏好的配色］。
+同時匯出並驗證 PDF。
+```
+
+### 路徑二：從職涯資料開始
+
+也可以用既有的職涯文字明確呼叫 Skill：
 
 ```text
 Use $html-resume to create a polished A4 HTML resume from the attached career history.
 Use a professional navy and steel-blue palette.
 ```
 
-也可以直接用自然語言描述需求：
+或直接用自然語言描述需求：
 
 ```text
 Turn this work history into a PDF-ready HTML resume for an AI application engineer.
@@ -143,7 +163,7 @@ Skill 不會強制套用預設履歷顏色。請在提示中自行指定偏好�
 產生文件前，請提供或確認以下資訊：
 
 - 目標文件類型。
-- 語言與目標讀者。
+- 來源語言、輸出語言與目標讀者。
 - 目標職位或定位。
 - 頁數偏好或硬性限制（如有）。
 - 必要章節。
