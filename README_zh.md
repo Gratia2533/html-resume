@@ -12,6 +12,7 @@
   <p>
     <a href="README.md">English</a> ·
     <a href="README_zh.md">繁體中文</a> ·
+    <a href="#為什麼優先使用-html">優勢</a> ·
     <a href="#範例">範例</a> ·
     <a href="#安裝">安裝</a> ·
     <a href="#使用方式">使用方式</a> ·
@@ -40,6 +41,22 @@
 - 永遠以可直接使用的 HTML 作為單一真實來源（source of truth）。
 - 需要 PDF 時，使用 Chromium 或 Playwright 產生精確的 A4 文件，並驗證頁面尺寸、溢出、裁切與視覺渲染。
 - 確保英文與中文內容具備清楚易讀的排版，並保留可選取的文字。
+
+## 為什麼優先使用 HTML
+
+- HTML 提供 AI Agent 與人工都能修改的結構化來源。Agent 可以針對語意化章節與 CSS 進行調整，不必每次都從頭重建整份文件。
+- 與直接產生 PDF 相比，HTML 產出後仍然方便人工修改；PDF 應被視為經驗證後的交付格式，而不是唯一的來源檔案。
+- 與產生圖片相比，HTML 的文字可以選取、搜尋，也更容易驗證。圖片中的文字可能出現措辭、錯字、字元或版面不穩定等問題，之後也很難精確修改。
+- 修改完成後，可以從同一份 HTML 再匯出 PDF；因此既保留原始來源的可編輯性，也能產生適合交付的最終文件。
+
+## 撰寫建議
+
+撰寫與潤飾內容時，可以依語言選擇以下工具作為輔助：
+
+- 英文：[blader/humanizer](https://github.com/blader/humanizer)
+- 繁體中文：[kevintsai1202/Humanizer-zh-TW](https://github.com/kevintsai1202/Humanizer-zh-TW)
+
+這些工具可以協助讓文字更自然，但不能取代事實查核。雇主、日期、數據、職責歸屬、資格與聯絡資訊，都應以原始資料為依據。
 
 ## 範例
 
@@ -93,6 +110,17 @@ cp -R skills/html-resume ~/.agents/skills/html-resume
 
 若其他 Agent 支援 [Agent Skills standard](https://agentskills.io/)，請讓 Agent 指向 `skills/html-resume/SKILL.md`，或將完整的 `skills/html-resume/` 資料夾複製到該 Agent 文件指定的 Skill 目錄。請確保 `SKILL.md` 與 `agents/openai.yaml` 一起保留。
 
+### 方式三：使用 uv 建立 PDF 轉換環境
+
+此 Repo 已提供 `pyproject.toml` 與 `uv.lock`，用於管理 Playwright PDF 轉換工具的依賴。完成 [uv 安裝](https://docs.astral.sh/uv/getting-started/installation/)後，建立專案環境並安裝 Chromium：
+
+```bash
+uv sync
+uv run playwright install chromium
+```
+
+`uv sync` 會建立本機 `.venv`，並安裝 lockfile 鎖定的 Python 依賴；Chromium 則由 Playwright 另外管理。
+
 ## 使用方式
 
 可以明確呼叫 Skill：
@@ -126,33 +154,29 @@ Skill 不會強制套用預設履歷顏色。請在提示中自行指定偏好�
 
 ## 匯出 PDF
 
-產生 `resume.html` 後，可使用 Chromium 匯出：
+建議使用 [`html_to_pdf.py`](html_to_pdf.py)，透過 **Playwright（瀏覽器自動化工具）+ Chromium（Chrome 核心瀏覽器引擎）** 進行轉換。腳本會讓 Chromium 開啟本機 HTML，再呼叫 `page.pdf()`，並設定：
+
+- `print_background=True`
+- `prefer_css_page_size=True`
+- `format="A4"`
+
+因此 CSS 裡的 `@page { size: A4; }`、以 `mm` 設定的尺寸與背景色，都能較忠實地保留。Chromium 會直接渲染 HTML 與 CSS，通常也會比經由 LibreOffice 文件版面模型轉換更穩定。
+
+使用 Installation 段落建立的 uv 環境後，可執行：
 
 ```bash
-chromium \
-  --headless \
-  --disable-gpu \
-  --no-pdf-header-footer \
-  --print-to-pdf=resume.pdf \
-  resume.html
+uv run python html_to_pdf.py examples/sample-output/resume.html resume.pdf
 ```
 
-或使用 Playwright：
+若不使用 uv，也可以直接安裝 Playwright 與 Chromium，再以 Python 執行同一支腳本：
 
-```js
-import { chromium } from "playwright";
-
-const browser = await chromium.launch();
-const page = await browser.newPage();
-await page.goto("file:///absolute/path/resume.html", { waitUntil: "networkidle" });
-await page.pdf({
-  path: "resume.pdf",
-  format: "A4",
-  printBackground: true,
-  margin: { top: "0mm", right: "0mm", bottom: "0mm", left: "0mm" }
-});
-await browser.close();
+```bash
+python3 -m pip install playwright
+python3 -m playwright install chromium
+python3 html_to_pdf.py examples/sample-output/resume.html resume.pdf
 ```
+
+輸出路徑可以省略；若未指定，腳本會在輸入 HTML 旁以相同檔名產生 PDF。
 
 分享 PDF 前，務必確認頁面尺寸，將每一頁渲染為圖片，並檢查裁切、孤立標題、頁尾重疊、對比度與字型渲染。
 
@@ -176,9 +200,12 @@ await browser.close();
 │   ├── sample-input.md
 │   └── sample-output/
 │       └── resume.html
+├── html_to_pdf.py               # 使用 Playwright 的 HTML 轉 PDF 工具
 ├── LICENSE
+├── pyproject.toml               # Python 專案與 Playwright 依賴
 ├── README.md
-└── README_zh.md
+├── README_zh.md
+└── uv.lock                      # 可重現的 Python 依賴 lockfile
 ```
 
 ## 適用範圍

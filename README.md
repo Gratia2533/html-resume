@@ -12,6 +12,7 @@
   <p>
     <a href="#what-it-does">English</a> ·
     <a href="README_zh.md">繁體中文</a> ·
+    <a href="#why-html-first">Advantages</a> ·
     <a href="#example">Examples</a> ·
     <a href="#installation">Installation</a> ·
     <a href="#usage">Usage</a> ·
@@ -44,6 +45,22 @@
 - Always delivers production-ready HTML as the source of truth.
 - Generates exact A4 PDF output with Chromium or Playwright when requested, then validates page size, overflow, clipping, and visual rendering.
 - Preserves readable typography and selectable text for English and Chinese content.
+
+## Why HTML first
+
+- HTML gives both AI agents and people a structured, editable source. Agents can target semantic sections and CSS instead of recreating an entire document from scratch.
+- Unlike generating a PDF directly, the HTML source remains practical to edit by hand after generation. The PDF is treated as the validated delivery format, not the only source file.
+- Unlike generating an image, HTML keeps text selectable, searchable, and easier to validate. Image-generated text can contain unstable wording, spelling, character, or layout errors and is difficult to revise precisely.
+- The same HTML can be exported to PDF after editing, so the workflow preserves source-level editability while still producing a polished final document.
+
+## Writing recommendations
+
+For language polishing during drafting, you can optionally use:
+
+- English: [blader/humanizer](https://github.com/blader/humanizer)
+- Traditional Chinese: [kevintsai1202/Humanizer-zh-TW](https://github.com/kevintsai1202/Humanizer-zh-TW)
+
+These tools can help make wording more natural, but they do not replace fact-checking. Keep employers, dates, metrics, ownership, qualifications, and contact details grounded in the source information.
 
 ## Example
 
@@ -97,6 +114,17 @@ Then start a new agent session if the Skill does not appear automatically. Invok
 
 For other agents that implement the [Agent Skills standard](https://agentskills.io/), point the agent to `skills/html-resume/SKILL.md` or copy the entire `skills/html-resume/` directory into that agent's documented Skill directory. Keep both `SKILL.md` and `agents/openai.yaml` together.
 
+### Option 3: PDF conversion environment with uv
+
+This repository includes `pyproject.toml` and `uv.lock` for the Playwright-based PDF converter. After [installing uv](https://docs.astral.sh/uv/getting-started/installation/), create the project environment and install Chromium:
+
+```bash
+uv sync
+uv run playwright install chromium
+```
+
+`uv sync` creates the local `.venv` and installs the locked Python dependencies. The Chromium installation is managed separately by Playwright.
+
 ## Usage
 
 The Skill can be invoked explicitly:
@@ -130,33 +158,29 @@ Before generating the document, provide or confirm:
 
 ## Export to PDF
 
-After generating `resume.html`, export it with Chromium:
+The recommended conversion path uses **Playwright (a browser automation tool) + Chromium (the browser engine behind Chrome)** through [`html_to_pdf.py`](html_to_pdf.py). The script opens the local HTML in Chromium and calls `page.pdf()` with:
+
+- `print_background=True`
+- `prefer_css_page_size=True`
+- `format="A4"`
+
+This preserves CSS such as `@page { size: A4; }`, millimeter-based dimensions, and background colors more faithfully. Because Chromium renders the HTML and CSS directly, the result is generally more stable than converting through LibreOffice's document layout model.
+
+With the uv environment described in the Installation section, convert an HTML file with:
 
 ```bash
-chromium \
-  --headless \
-  --disable-gpu \
-  --no-pdf-header-footer \
-  --print-to-pdf=resume.pdf \
-  resume.html
+uv run python html_to_pdf.py examples/sample-output/resume.html resume.pdf
 ```
 
-Or use Playwright:
+If you prefer not to use uv, install Playwright and Chromium directly, then run the same script with Python:
 
-```js
-import { chromium } from "playwright";
-
-const browser = await chromium.launch();
-const page = await browser.newPage();
-await page.goto("file:///absolute/path/resume.html", { waitUntil: "networkidle" });
-await page.pdf({
-  path: "resume.pdf",
-  format: "A4",
-  printBackground: true,
-  margin: { top: "0mm", right: "0mm", bottom: "0mm", left: "0mm" }
-});
-await browser.close();
+```bash
+python3 -m pip install playwright
+python3 -m playwright install chromium
+python3 html_to_pdf.py examples/sample-output/resume.html resume.pdf
 ```
+
+The output path is optional. When omitted, the script writes the PDF beside the input HTML using the same base filename.
 
 Always verify the PDF page size, render every page to an image, and inspect clipping, orphan headings, footer overlap, contrast, and font rendering before sharing it.
 
@@ -180,9 +204,12 @@ Always verify the PDF page size, render every page to an image, and inspect clip
 │   ├── sample-input.md
 │   └── sample-output/
 │       └── resume.html
+├── html_to_pdf.py               # Playwright-based HTML-to-PDF converter
 ├── LICENSE
+├── pyproject.toml               # Python project and Playwright dependency
 ├── README.md
-└── README_zh.md
+├── README_zh.md
+└── uv.lock                      # Reproducible Python dependency lockfile
 ```
 
 ## Design scope

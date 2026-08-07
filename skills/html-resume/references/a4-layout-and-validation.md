@@ -164,47 +164,22 @@ Keep backgrounds transparent. Use a monogram in the same open position when no p
 
 ## 4. PDF export
 
-Chromium:
+When working from this repository, use the Playwright-based `html_to_pdf.py` converter. Create the uv environment and install Chromium once:
 
 ```bash
-chromium \
-  --headless \
-  --disable-gpu \
-  --no-pdf-header-footer \
-  --print-to-pdf=resume.pdf \
-  resume.html
+uv sync
+uv run playwright install chromium
 ```
 
-Google Chrome can use the same flags.
+Then convert the HTML:
 
-Playwright:
-
-```js
-import { chromium } from "playwright";
-
-const browser = await chromium.launch();
-const page = await browser.newPage();
-
-await page.goto("file:///absolute/path/resume.html", {
-  waitUntil: "networkidle"
-});
-
-await page.pdf({
-  path: "resume.pdf",
-  format: "A4",
-  printBackground: true,
-  margin: {
-    top: "0mm",
-    right: "0mm",
-    bottom: "0mm",
-    left: "0mm"
-  }
-});
-
-await browser.close();
+```bash
+uv run python html_to_pdf.py resume.html resume.pdf
 ```
 
-Do not enable browser-generated headers or footers.
+The converter opens the local HTML in Chromium, waits for fonts and images, and calls `page.pdf()` with `print_background=True`, `prefer_css_page_size=True`, and `format="A4"`. This gives CSS `@page` declarations priority while preserving A4 as the fallback paper format. Do not enable browser-generated headers or footers.
+
+If the repository converter is unavailable, implement the same settings with Playwright and Chromium rather than converting through an office document model.
 
 ## 5. Validation workflow
 
