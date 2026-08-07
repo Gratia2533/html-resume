@@ -68,16 +68,15 @@
 
 ## 安裝
 
-### 方式一：ChatGPT 網頁版
+### 方式一：在 ChatGPT 建立個人 Skill
 
-ChatGPT 網頁版透過可安裝的 Plugin 發佈可重複使用的 Skills。原始的 `SKILL.md` 資料夾適合本地編寫，但本身並不是網頁版的安裝套件。
+個人使用不需要先將此 Repo 發佈為 Plugin。ChatGPT 可以直接建立或上傳自訂的個人 Skill。請依照官方 [Skills in ChatGPT](https://help.openai.com/en/articles/20001066-skills-in-chatgpt) 流程操作：
 
-此 Repo 已準備好 Plugin 所需結構：
-
-1. 依照[官方 Plugin 封裝文件](https://developers.openai.com/plugins/build/plugins)，將此 Repo 發佈或提交為 `html-resume` Plugin。
-2. 在 ChatGPT 網頁版開啟工作區可用的 Plugin 目錄。
-3. 搜尋 `HTML Resume` 並安裝。
-4. 開始對話，輸入類似以下的需求：
+1. 在 ChatGPT 側邊欄選擇 **Plugins**。
+2. 在 Plugin Directory 開啟 **Skills** 分頁。
+3. 選擇 **Create**，再選擇 **Upload from your computer**。
+4. 上傳完整的 `skills/html-resume/` Skill 套件。請讓 `SKILL.md`、`agents/` 與 `references/` 保持在一起，確保所有指示與支援資源都能使用。
+5. ChatGPT 完成安全掃描後，安裝 Skill，接著開始對話並輸入類似以下的需求：
 
    ```text
    Create an A4 HTML resume for a Senior Backend Engineer.
@@ -86,7 +85,7 @@ ChatGPT 網頁版透過可安裝的 Plugin 發佈可重複使用的 Skills。原
    Use the html-resume skill. Ask me for missing information first.
    ```
 
-Plugin 是否可安裝，取決於 ChatGPT 產品方案、工作區設定與發佈狀態。如果 Plugin 尚未發佈，請改用下方的本地安裝方式，或透過[官方 Plugin 提交流程](https://developers.openai.com/plugins/deploy/submission)提交。
+也可以選擇 **Create with chat** 或 **Create with editor**，並將此 Repo 作為建立 Skill 的參考來源。個人 Skills 目前主要適用於 ChatGPT Business、Enterprise、Healthcare 與 Edu；Enterprise 與 Edu 工作區可能需要管理員先啟用 Skills 與 Skill 上傳權限。個人 Skills 必須分別加入桌面版與 web／mobile，這些使用介面之間不會自動同步。
 
 ### 方式二：本地 Agent
 

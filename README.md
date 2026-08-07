@@ -72,16 +72,15 @@ The sample content is fictional and is included to demonstrate the expected inpu
 
 ## Installation
 
-### Option 1: ChatGPT on the web
+### Option 1: Personal Skill in ChatGPT
 
-ChatGPT on the web uses the installable Plugin distribution for reusable Skills. A raw `SKILL.md` folder is intended for local authoring and is not, by itself, a web installation package.
+Personal use does not require publishing this repository as a Plugin. ChatGPT can create or upload a custom Personal Skill directly. Follow the official [Skills in ChatGPT](https://help.openai.com/en/articles/20001066-skills-in-chatgpt) workflow:
 
-This repository is Plugin-ready:
-
-1. Publish or submit this repository as the `html-resume` Plugin using the [official Plugin packaging documentation](https://developers.openai.com/plugins/build/plugins).
-2. In ChatGPT on the web, open the Plugin directory available to your workspace.
-3. Search for `HTML Resume` and install it.
-4. Start a conversation with a request such as:
+1. In the ChatGPT sidebar, select **Plugins**.
+2. In the Plugin Directory, open the **Skills** tab.
+3. Select **Create**, then **Upload from your computer**.
+4. Upload the complete `skills/html-resume/` Skill package. Keep `SKILL.md`, `agents/`, and `references/` together so all instructions and supporting resources remain available.
+5. After ChatGPT finishes scanning the upload, install the Skill and start a conversation with a request such as:
 
    ```text
    Create an A4 HTML resume for a Senior Backend Engineer.
@@ -90,7 +89,7 @@ This repository is Plugin-ready:
    Use the html-resume skill. Ask me for missing information first.
    ```
 
-Availability of Plugin installation can depend on the ChatGPT product, workspace, and publication status. If the Plugin has not been published yet, use the local installation method below or submit it through the [official Plugin submission flow](https://developers.openai.com/plugins/deploy/submission).
+You can also choose **Create with chat** or **Create with editor** and use this repository as the source material. Personal Skills are generally available for ChatGPT Business, Enterprise, Healthcare, and Edu. Enterprise and Edu workspaces may require an admin to enable Skills and Skill uploads. Personal Skills must be added separately on desktop and web/mobile and do not automatically sync across those surfaces.
 
 ### Option 2: Local agents
 
