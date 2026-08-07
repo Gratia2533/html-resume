@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alex Chen — Senior AI Application Engineer</title>
+    <style>
+      :root {
+        --page-bg: #ffffff;
+        --text-main: #15243a;
+        --text-muted: #52657e;
+        --text-soft: #718198;
+        --primary: #1f5f99;
+        --primary-strong: #143d66;
+        --primary-soft: #dbeaf5;
+        --primary-pale: #f3f8fc;
+        --accent: #4f8fbd;
+        --line: #c8d6e5;
+        --panel-bg: #f5f8fb;
+        --on-primary: #ffffff;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: #e8edf2;
+        color: var(--text-main);
+        font-family:
+          "Noto Sans TC",
+          "Noto Sans CJK TC",
+          "Segoe UI",
+          Arial,
+          sans-serif;
+        font-size: 9.6pt;
+        line-height: 1.48;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .resume-document {
+        width: 210mm;
+        margin: 0 auto;
+      }
+
+      .page {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        margin: 10mm auto;
+        padding: 14mm 15mm 18mm;
+        overflow: hidden;
+        background: var(--page-bg);
+        box-shadow: 0 4mm 12mm rgba(20, 61, 102, 0.13);
+        break-after: page;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        break-after: auto;
+        page-break-after: auto;
+      }
+
+      .top-band {
+        position: absolute;
+        inset: 0 0 auto;
+        height: 7mm;
+        background: linear-gradient(90deg, var(--primary-strong), var(--accent));
+      }
+
+      .footer-band {
+        position: absolute;
+        inset: auto 0 0;
+        height: 10mm;
+        padding: 0 15mm;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--primary-strong);
+        color: var(--on-primary);
+        font-size: 8pt;
+        letter-spacing: 0.02em;
+      }
+
+      .identity-header {
+        display: grid;
+        grid-template-columns: 30mm 1fr;
+        gap: 8mm;
+        align-items: center;
+        padding: 2mm 0 6mm;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .monogram {
+        width: 29mm;
+        height: 29mm;
+        display: grid;
+        place-items: center;
+        border: 1.2mm solid var(--primary-soft);
+        border-radius: 50%;
+        background: var(--primary-strong);
+        color: var(--on-primary);
+        font-size: 17pt;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 0.8mm;
+        color: var(--primary-strong);
+        font-size: 24pt;
+        line-height: 1.05;
+        letter-spacing: -0.025em;
+      }
+
+      .headline {
+        margin-bottom: 2.2mm;
+        color: var(--primary);
+        font-size: 11.5pt;
+        font-weight: 750;
+      }
+
+      .contact-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2mm 4mm;
+        color: var(--text-muted);
+        font-size: 8.6pt;
+      }
+
+      .contact-line span + span::before {
+        content: "•";
+        margin-right: 4mm;
+        color: var(--accent);
+      }
+
+      .page-grid {
+        display: grid;
+        grid-template-columns: 53mm 1fr;
+        gap: 8mm;
+        padding-top: 6mm;
+      }
+
+      .sidebar {
+        align-self: start;
+        padding: 5mm 4.5mm;
+        border-left: 1.4mm solid var(--accent);
+        background: var(--primary-pale);
+      }
+
+      .sidebar-section + .sidebar-section {
+        margin-top: 5mm;
+        padding-top: 4mm;
+        border-top: 1px solid var(--line);
+      }
+
+      .section-title {
+        margin-bottom: 2.8mm;
+        color: var(--primary-strong);
+        font-size: 10.4pt;
+        line-height: 1.2;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .sidebar .section-title {
+        font-size: 9.6pt;
+      }
+
+      .summary {
+        margin-bottom: 0;
+        color: #30445d;
+      }
+
+      .skill-group + .skill-group {
+        margin-top: 2.8mm;
+      }
+
+      .skill-label {
+        margin-bottom: 0.6mm;
+        color: var(--text-main);
+        font-weight: 800;
+      }
+
+      .skill-copy {
+        color: var(--text-muted);
+        font-size: 8.6pt;
+        line-height: 1.42;
+      }
+
+      .availability {
+        display: inline-block;
+        padding: 1.2mm 2mm;
+        border-left: 2px solid var(--primary);
+        background: var(--primary-soft);
+        color: var(--primary-strong);
+        font-size: 8.4pt;
+        font-weight: 750;
+      }
+
+      .experience-item {
+        break-inside: avoid;
+      }
+
+      .experience-item + .experience-item {
+        margin-top: 5mm;
+        padding-top: 4mm;
+        border-top: 1px solid var(--line);
+      }
+
+      .experience-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 5mm;
+        align-items: baseline;
+      }
+
+      .experience-role {
+        margin-bottom: 0;
+        font-size: 11.2pt;
+        line-height: 1.25;
+      }
+
+      .experience-date {
+        color: var(--text-muted);
+        font-size: 8.6pt;
+        white-space: nowrap;
+      }
+
+      .experience-company {
+        margin: 1mm 0 2.2mm;
+        color: var(--primary);
+        font-size: 9.5pt;
+        font-weight: 750;
+      }
+
+      .compact-list {
+        margin: 0;
+        padding-left: 4.5mm;
+      }
+
+      .compact-list li {
+        margin-bottom: 1.8mm;
+        padding-left: 0.5mm;
+      }
+
+      .compact-list li::marker {
+        color: var(--accent);
+      }
+
+      .continuation-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        padding: 1mm 0 4mm;
+        margin-bottom: 4.5mm;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .continuation-name {
+        color: var(--primary-strong);
+        font-size: 15pt;
+        font-weight: 800;
+      }
+
+      .continuation-label {
+        color: var(--text-muted);
+        font-size: 8.5pt;
+      }
+
+      .project {
+        display: grid;
+        grid-template-columns: 34mm 1fr;
+        gap: 5mm;
+        padding: 5mm 0;
+        border-bottom: 1px solid var(--line);
+        break-inside: avoid;
+      }
+
+      .project:first-of-type {
+        padding-top: 0;
+      }
+
+      .project-kicker {
+        align-self: start;
+        padding: 2.2mm 2.5mm;
+        border-left: 3px solid var(--accent);
+        background: var(--primary-soft);
+        color: var(--primary-strong);
+        font-size: 8.2pt;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .project-title {
+        margin-bottom: 1.2mm;
+        font-size: 10.8pt;
+        line-height: 1.25;
+      }
+
+      .project-copy {
+        margin-bottom: 1.2mm;
+        color: #344960;
+      }
+
+      .project-tech {
+        margin-bottom: 0;
+        color: var(--text-muted);
+        font-size: 8.4pt;
+      }
+
+      .metric {
+        display: inline-block;
+        margin-top: 1mm;
+        padding: 0.8mm 1.8mm;
+        border: 1px solid #adc7dc;
+        background: var(--primary-pale);
+        color: var(--primary-strong);
+        font-size: 8.2pt;
+        font-weight: 800;
+      }
+
+      .support-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6mm;
+        margin-top: 5mm;
+      }
+
+      .support-card {
+        min-height: 55mm;
+        padding: 4mm;
+        border: 1px solid var(--line);
+        background: var(--panel-bg);
+        break-inside: avoid;
+      }
+
+      .support-card .section-title {
+        margin-bottom: 3mm;
+      }
+
+      .entry + .entry {
+        margin-top: 3.2mm;
+        padding-top: 2.8mm;
+        border-top: 1px solid var(--line);
+      }
+
+      .entry-title {
+        font-weight: 800;
+      }
+
+      .entry-meta {
+        margin-top: 0.5mm;
+        color: var(--primary);
+        font-size: 8.6pt;
+        font-weight: 700;
+      }
+
+      .entry-copy {
+        margin: 0.8mm 0 0;
+        color: var(--text-muted);
+        font-size: 8.4pt;
+      }
+
+      @media print {
+        html,
+        body {
+          width: 210mm;
+          background: var(--page-bg);
+        }
+
+        .resume-document {
+          width: 210mm;
+          margin: 0;
+        }
+
+        .page {
+          margin: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="resume-document">
+      <section class="page" aria-label="Resume page 1 of 2">
+        <div class="top-band" aria-hidden="true"></div>
+
+        <header class="identity-header">
+          <div class="monogram" aria-label="Alex Chen monogram">AC</div>
+          <div>
+            <h1>Alex Chen</h1>
+            <p class="headline">Senior AI Application Engineer</p>
+            <div class="contact-line" aria-label="Contact information">
+              <span>Taipei, Taiwan</span>
+              <span><a href="mailto:alex.chen@example.com">alex.chen@example.com</a></span>
+              <span><a href="https://alexchen.dev">alexchen.dev</a></span>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-grid">
+          <aside class="sidebar" aria-label="Profile and skills">
+            <section class="sidebar-section">
+              <h2 class="section-title">Profile</h2>
+              <p class="summary">AI application engineer who connects product thinking, API design, LLM workflows, observability, and production operations to build dependable AI systems.</p>
+            </section>
+
+            <section class="sidebar-section">
+              <h2 class="section-title">Core skills</h2>
+              <div class="skill-group">
+                <div class="skill-label">AI systems</div>
+                <div class="skill-copy">LLM APIs, structured output, RAG, agent workflows, evaluation, provider fallback</div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-label">Backend</div>
+                <div class="skill-copy">Python, FastAPI, TypeScript, REST APIs, asynchronous processing</div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-label">Data</div>
+                <div class="skill-copy">PostgreSQL, DynamoDB, OpenSearch</div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-label">Cloud &amp; operations</div>
+                <div class="skill-copy">AWS Lambda, ECS, SQS, tracing, retry design, incident diagnostics</div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-label">Frontend</div>
+                <div class="skill-copy">React and practical internal product interfaces</div>
+              </div>
+            </section>
+
+            <section class="sidebar-section">
+              <h2 class="section-title">Availability</h2>
+              <div class="availability">Open to selected opportunities</div>
+            </section>
+          </aside>
+
+          <div>
+            <section aria-labelledby="experience-heading">
+              <h2 class="section-title" id="experience-heading">Experience</h2>
+
+              <article class="experience-item">
+                <div class="experience-header">
+                  <h3 class="experience-role">Senior AI Application Engineer</h3>
+                  <span class="experience-date">2022–Present</span>
+                </div>
+                <div class="experience-company">Northstar Labs</div>
+                <ul class="compact-list">
+                  <li>Built a document intelligence workflow that reduced manual review time by 58%.</li>
+                  <li>Designed typed provider adapters and fallback handling for multiple LLM providers.</li>
+                  <li>Added request tracing, retry metrics, and structured-output validation to the production pipeline.</li>
+                  <li>Created evaluation fixtures and replay tooling for regression checks before model and prompt releases.</li>
+                </ul>
+              </article>
+
+              <article class="experience-item">
+                <div class="experience-header">
+                  <h3 class="experience-role">Backend Engineer</h3>
+                  <span class="experience-date">2019–2022</span>
+                </div>
+                <div class="experience-company">Harbor Systems</div>
+                <ul class="compact-list">
+                  <li>Delivered FastAPI services used by internal operations and customer-facing products.</li>
+                  <li>Improved asynchronous job reliability with idempotency keys, queue visibility, and replay tooling.</li>
+                  <li>Built PostgreSQL and OpenSearch query APIs for operational search and reporting workflows.</li>
+                </ul>
+              </article>
+            </section>
+          </div>
+        </div>
+
+        <footer class="footer-band">
+          <span>Alex Chen · Senior AI Application Engineer</span>
+          <span>Page 1 / 2</span>
+        </footer>
+      </section>
+
+      <section class="page" aria-label="Resume page 2 of 2">
+        <div class="top-band" aria-hidden="true"></div>
+
+        <header class="continuation-header">
+          <div class="continuation-name">Alex Chen</div>
+          <div class="continuation-label">Selected projects, education, and credentials</div>
+        </header>
+
+        <section aria-labelledby="projects-heading">
+          <h2 class="section-title" id="projects-heading">Selected projects</h2>
+
+          <article class="project">
+            <div class="project-kicker">Document AI<br />Production workflow</div>
+            <div>
+              <h3 class="project-title">Document Intelligence Platform</h3>
+              <p class="project-copy">Designed structured extraction, confidence checks, human review, and provider fallback for high-volume document workflows.</p>
+              <p class="project-tech">Python · FastAPI · PostgreSQL · LLM APIs</p>
+              <span class="metric">58% less manual review time</span>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-kicker">Agent reliability<br />Operations toolkit</div>
+            <div>
+              <h3 class="project-title">Agent Operations Toolkit</h3>
+              <p class="project-copy">Built tracing, replay, rate-limit handling, evaluation fixtures, and schema validation for reliable LLM-powered applications.</p>
+              <p class="project-tech">Python · OpenTelemetry · SQS · Structured output</p>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-kicker">Enterprise RAG<br />Knowledge search</div>
+            <div>
+              <h3 class="project-title">Recruiting Knowledge Search</h3>
+              <p class="project-copy">Implemented document ingestion, access-aware filtering, and source-linked answers for internal recruiting knowledge.</p>
+              <p class="project-tech">OpenSearch · PostgreSQL · React · RAG</p>
+            </div>
+          </article>
+        </section>
+
+        <div class="support-grid">
+          <section class="support-card" aria-labelledby="education-heading">
+            <h2 class="section-title" id="education-heading">Education</h2>
+            <div class="entry">
+              <div class="entry-title">National Taiwan University</div>
+              <div class="entry-meta">M.S. in Computer Science · 2019</div>
+            </div>
+            <div class="entry">
+              <div class="entry-title">National Chengchi University</div>
+              <div class="entry-meta">B.S. in Information Management · 2017</div>
+            </div>
+          </section>
+
+          <section class="support-card" aria-labelledby="credentials-heading">
+            <h2 class="section-title" id="credentials-heading">Credentials &amp; languages</h2>
+            <div class="entry">
+              <div class="entry-title">AWS Certified Developer – Associate</div>
+              <div class="entry-meta">Issued 2023</div>
+            </div>
+            <div class="entry">
+              <div class="entry-title">Traditional Chinese</div>
+              <p class="entry-copy">Native</p>
+            </div>
+            <div class="entry">
+              <div class="entry-title">English</div>
+              <p class="entry-copy">Professional working proficiency</p>
+            </div>
+          </section>
+        </div>
+
+        <footer class="footer-band">
+          <span>alex.chen@example.com · alexchen.dev</span>
+          <span>Page 2 / 2</span>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>
