@@ -1,6 +1,6 @@
 [project]
 name = "html-resume"
-version = "0.1.0"
+version = "1.0.0"
 description = "Create recruiter-friendly HTML resumes and convert them to validated A4 PDFs."
 readme = "README.md"
 requires-python = ">=3.10"
