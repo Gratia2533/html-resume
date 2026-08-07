@@ -1,0 +1,7 @@
+interface:
+  display_name: "HTML Resume"
+  short_description: "Recruiter-ready HTML resumes and A4 PDFs"
+  default_prompt: "Use $html-resume to rewrite my career information into a recruiter-friendly HTML resume without inventing facts. Ask me to choose a color palette if I have not supplied one. If I request PDF, export the same HTML and validate every rendered page."
+
+policy:
+  allow_implicit_invocation: true

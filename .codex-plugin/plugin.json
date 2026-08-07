@@ -1,0 +1,36 @@
+{
+  "name": "html-resume",
+  "version": "0.1.0",
+  "description": "Create or redesign recruiter-friendly HTML resumes with validated A4 PDF output.",
+  "author": {
+    "name": "Gratia",
+    "url": "https://github.com/Gratia2533"
+  },
+  "repository": "https://github.com/Gratia2533/html-resume",
+  "license": "MIT",
+  "keywords": [
+    "resume",
+    "cv",
+    "portfolio",
+    "html",
+    "pdf",
+    "career"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "HTML Resume",
+    "shortDescription": "Recruiter-ready HTML resumes and A4 PDFs",
+    "longDescription": "Create or redesign resumes, CVs, executive profiles, professional biographies, and portfolio summaries with factual content rewriting, restrained editorial hierarchy, exact A4 layout, and rendered PDF validation.",
+    "developerName": "Gratia",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "brandColor": "#7663A8",
+    "defaultPrompt": [
+      "Use html-resume to rewrite my career information into a recruiter-friendly HTML resume without inventing facts.",
+      "Use html-resume to create an A4 HTML resume, export it to PDF, and validate every rendered page."
+    ]
+  }
+}
